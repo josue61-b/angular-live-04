@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Product } from './models';
+import { ProductService } from './product.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -8,28 +10,51 @@ import { Product } from './models';
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnDestroy {
   isEditingId: number | null = null;
   productForm: FormGroup;
-  products: Product[] = [
-    { id: 1, name: 'Product A', price: 10.99, category: 'Category 1' },
-    { id: 2, name: 'Product B', price: 20.49, category: 'Category 2' },
-    { id: 3, name: 'Product C', price: 15.75, category: 'Category 3' },
-    { id: 4, name: 'Product D', price: 8.99, category: 'Category 1' },
-    { id: 5, name: 'Product E', price: 12.49, category: 'Category 2' },
-    { id: 6, name: 'Product F', price: 25.0, category: 'Category 3' },
-    { id: 7, name: 'Product G', price: 30.99, category: 'Category 1' },
-    { id: 8, name: 'Product H', price: 5.49, category: 'Category 2' },
-    { id: 9, name: 'Product I', price: 18.75, category: 'Category 3' },
-    { id: 10, name: 'Product J', price: 22.99, category: 'Category 1' },
-  ];
+  products: Product[] = [];
+  isLoading = false;
 
-  constructor(private fb: FormBuilder) {
+  productsSubscription: Subscription | null = null; // Subscription to manage the observable
+
+  constructor(private fb: FormBuilder, private productService: ProductService) {
+    // this.loadProducts();
+    this.loadProductsObservable(); // Call the observable method to fetch products
     this.productForm = this.fb.group({
       name: [''],
       price: [''],
       category: [''], // Add category to the form group
     });
+  }
+
+  ngOnDestroy(): void {
+    console.log('Destruyendo el componente...');
+    this.productsSubscription?.unsubscribe();
+  }
+
+  loadProductsObservable() {
+    this.isLoading = true;
+    this.productsSubscription = this.productService.getProducts$().subscribe({
+      next: (datos) => {
+        console.log(datos);
+      },
+      error: (error) => console.error(error),
+      complete: () => {
+        this.isLoading = false; // Set loading state to false when the observable completes
+      },
+    });
+  }
+
+  loadProducts() {
+    this.isLoading = true; // Set loading state to true
+    this.productService
+      .getProducts()
+      // Cuando la promesa se resuelve, se ejecuta el siguiente bloque
+      .then((datos) => console.log(datos))
+      .catch((error) => console.error(error)) // Manejo de errores
+      // Al finalizar la promesa
+      .finally(() => (this.isLoading = false)); // Call the service to fetch products
   }
 
   onSubmit() {
