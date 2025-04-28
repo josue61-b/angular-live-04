@@ -1,5 +1,7 @@
 <h1 appHighlight>Productos</h1>
 
+<p>Producto barato: {{ productName$ | async }}</p>
+
 <ng-container *ngIf="isLoading; else notLoading">
   <p>Cargando, por favor espere...</p>
 </ng-container>

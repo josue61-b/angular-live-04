@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Product } from './models';
 import { ProductService } from './product.service';
-import { Subscription } from 'rxjs';
+import { first, Observable, Subscription, take } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -16,9 +16,22 @@ export class ProductsComponent implements OnDestroy {
   products: Product[] = [];
   isLoading = false;
 
+  productName: string = ''; // Variable to store the product name
+
+  productName$: Observable<string>;
+
   productsSubscription: Subscription | null = null; // Subscription to manage the observable
 
   constructor(private fb: FormBuilder, private productService: ProductService) {
+    this.productName$ = this.productService.getProductsCheaperThan(8); // Initialize the observable
+
+    this.productService.getProductsCheaperThan(15).subscribe({
+      next: (productName) => {
+        this.productName = productName; // Store the product name in the variable
+        console.log('Producto más barato que 15: ', productName);
+      },
+    });
+
     // this.loadProducts();
     this.loadProductsObservable(); // Call the observable method to fetch products
     this.productForm = this.fb.group({
@@ -35,15 +48,18 @@ export class ProductsComponent implements OnDestroy {
 
   loadProductsObservable() {
     this.isLoading = true;
-    this.productsSubscription = this.productService.getProducts$().subscribe({
-      next: (datos) => {
-        console.log(datos);
-      },
-      error: (error) => console.error(error),
-      complete: () => {
-        this.isLoading = false; // Set loading state to false when the observable completes
-      },
-    });
+    this.productsSubscription = this.productService
+      .getProducts$()
+      .pipe(take(1), first())
+      .subscribe({
+        next: (datos) => {
+          this.products = datos; // Assign the fetched products to the component's products property
+        },
+        error: (error) => console.error(error),
+        complete: () => {
+          this.isLoading = false; // Set loading state to false when the observable completes
+        },
+      });
   }
 
   loadProducts() {

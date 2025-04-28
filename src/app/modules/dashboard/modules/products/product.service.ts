@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Product } from './models';
-import { Observable } from 'rxjs';
+import { delay, filter, map, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 const MY_FAKE_DB: Product[] = [
@@ -18,6 +18,16 @@ const MY_FAKE_DB: Product[] = [
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
+  // Actividad practica
+  getProductsCheaperThan(price: number): Observable<string> {
+    return of(...MY_FAKE_DB).pipe(
+      // Primero filtramos los productos por precio
+      filter((product) => product.price < price),
+      // Luego mapeamos el resultado para obtener solo el nombre del producto
+      map((product) => product.name)
+    );
+  }
+
   getProducts(): Promise<Product[]> {
     console.log('Fetching products...');
     /**
@@ -35,14 +45,19 @@ export class ProductService {
 
   getProducts$(): Observable<Product[]> {
     const productsObservable = new Observable<Product[]>((observer) => {
-      let counter = 0;
-      setInterval(() => {
-        counter++;
-        // observer.error('Error fetching products'); // Simulate an error
-        observer.next(MY_FAKE_DB);
-
-        // observer.complete(); // Complete the observable after emitting the data
+      setTimeout(() => {
+        // Simulate a 2-second delay
+        observer.next(MY_FAKE_DB); // Emit the data
+        observer.complete(); // Complete the observable after emitting the data
       }, 1000);
+      // // let counter = 0;
+      // setInterval(() => {
+      //   // counter++;
+      //   // observer.error('Error fetching products'); // Simulate an error
+      //   observer.next(MY_FAKE_DB);
+
+      //   // observer.complete(); // Complete the observable after emitting the data
+      // }, 1000);
     });
     return productsObservable;
   }
