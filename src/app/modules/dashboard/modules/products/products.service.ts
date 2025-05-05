@@ -18,6 +18,12 @@ const MY_FAKE_DB: Product[] = [
 
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
+  getProductById(id: number): Observable<Product | null> {
+    return of([...MY_FAKE_DB]).pipe(
+      map((products) => products.find((product) => product.id == id) || null)
+    );
+  }
+
   // Actividad practica
   getProductsCheaperThan(price: number): Observable<string> {
     return of(...MY_FAKE_DB).pipe(

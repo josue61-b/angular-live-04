@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ProductNameCategoryPipe } from './pipes/product-name-category.pipe';
 import { HighlightDirective } from './directives/highlight.directive';
 import { ProductsService } from './products.service';
+import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ProductsService } from './products.service';
     ProductsTableComponent,
     ProductNameCategoryPipe,
     HighlightDirective,
+    ProductDetailComponent,
   ],
   imports: [
     CommonModule,

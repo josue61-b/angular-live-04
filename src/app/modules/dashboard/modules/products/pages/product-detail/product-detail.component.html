@@ -1,0 +1,7 @@
+@if (!(product$ | async)) {
+<p>Producto no encontrado</p>
+} @else {
+
+<h1>{{ (product$ | async)?.name }}</h1>
+
+}
