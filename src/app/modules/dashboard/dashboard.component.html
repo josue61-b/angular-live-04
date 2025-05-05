@@ -35,10 +35,7 @@
 
   <!-- AREA DE CONTENIDO INICIO -->
   <div class="example-sidenav-content">
-    <button (click)="mostrarPantallaProductos = !mostrarPantallaProductos">
-      Ocultar/Mostrar pantalla de productos
-    </button>
-    <app-products *ngIf="mostrarPantallaProductos" />
+    <router-outlet></router-outlet>
   </div>
   <!-- AREA DE CONTENIDO FIN -->
 </mat-drawer-container>

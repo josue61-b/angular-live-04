@@ -13,7 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ProductNameCategoryPipe } from './pipes/product-name-category.pipe';
 import { HighlightDirective } from './directives/highlight.directive';
-import { ProductService } from './product.service';
+import { ProductsService } from './products.service';
 
 @NgModule({
   declarations: [

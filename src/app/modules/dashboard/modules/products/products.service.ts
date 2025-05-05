@@ -17,7 +17,7 @@ const MY_FAKE_DB: Product[] = [
 ];
 
 @Injectable({ providedIn: 'root' })
-export class ProductService {
+export class ProductsService {
   // Actividad practica
   getProductsCheaperThan(price: number): Observable<string> {
     return of(...MY_FAKE_DB).pipe(

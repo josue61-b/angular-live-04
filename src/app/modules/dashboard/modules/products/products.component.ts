@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Product } from './models';
-import { ProductService } from './product.service';
+import { ProductsService } from './products.service';
 import { first, Observable, Subscription, take } from 'rxjs';
 
 @Component({
@@ -22,10 +22,13 @@ export class ProductsComponent implements OnDestroy {
 
   productsSubscription: Subscription | null = null; // Subscription to manage the observable
 
-  constructor(private fb: FormBuilder, private productService: ProductService) {
-    this.productName$ = this.productService.getProductsCheaperThan(8); // Initialize the observable
+  constructor(
+    private fb: FormBuilder,
+    private productsService: ProductsService
+  ) {
+    this.productName$ = this.productsService.getProductsCheaperThan(8); // Initialize the observable
 
-    this.productService.getProductsCheaperThan(15).subscribe({
+    this.productsService.getProductsCheaperThan(15).subscribe({
       next: (productName) => {
         this.productName = productName; // Store the product name in the variable
         console.log('Producto más barato que 15: ', productName);
@@ -48,7 +51,7 @@ export class ProductsComponent implements OnDestroy {
 
   loadProductsObservable() {
     this.isLoading = true;
-    this.productsSubscription = this.productService
+    this.productsSubscription = this.productsService
       .getProducts$()
       .pipe(take(1), first())
       .subscribe({
@@ -64,7 +67,7 @@ export class ProductsComponent implements OnDestroy {
 
   loadProducts() {
     this.isLoading = true; // Set loading state to true
-    this.productService
+    this.productsService
       .getProducts()
       // Cuando la promesa se resuelve, se ejecuta el siguiente bloque
       .then((datos) => console.log(datos))
