@@ -1,0 +1,14 @@
+{
+  "products": [],
+  "orders": [],
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "fake@mail.com",
+      "password": "123456",
+      "role": "admin",
+      "token": "fake-jwt-token"
+    }
+  ]
+}
