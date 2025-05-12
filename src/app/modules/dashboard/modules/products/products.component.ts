@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Product } from './models';
 import { ProductsService } from './products.service';
 import { first, Observable, Subscription, take } from 'rxjs';
+import { AuthService } from '../../../../core/services/auth.service';
+import { User } from '../../../../core/models';
 
 @Component({
   selector: 'app-products',
@@ -22,10 +24,14 @@ export class ProductsComponent implements OnDestroy {
 
   productsSubscription: Subscription | null = null; // Subscription to manage the observable
 
+  authUser$: Observable<User | null>;
+
   constructor(
     private fb: FormBuilder,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private authService: AuthService
   ) {
+    this.authUser$ = this.authService.authUser$;
     this.productName$ = this.productsService.getProductsCheaperThan(8); // Initialize the observable
 
     this.productsService.getProductsCheaperThan(15).subscribe({

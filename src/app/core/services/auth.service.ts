@@ -1,40 +1,56 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models';
-
-const FAKE_AUTH_USER: User = {
-  id: 1,
-  name: 'John Doe',
-  email: 'fake@mail.com',
-  password: '123456',
-  role: 'admin',
-  token: 'fake-jwt-token',
-};
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  login(email: string, password: string): User | boolean {
-    if (
-      email === FAKE_AUTH_USER.email &&
-      password === FAKE_AUTH_USER.password
-    ) {
-      localStorage.setItem('token', FAKE_AUTH_USER.token);
-      return FAKE_AUTH_USER;
-    }
+  private _authUser$ = new BehaviorSubject<User | null>(null);
+  authUser$: Observable<User | null> = this._authUser$.asObservable();
 
-    return false;
+  constructor(private http: HttpClient, private router: Router) {}
+
+  login(email: string, password: string): void {
+    this.http
+      .get<User[]>(
+        `http://localhost:3000/users?email=${email}&password=${password}`
+      )
+      .subscribe({
+        next: (response) => {
+          const user = response[0];
+          if (user) {
+            console.log('User:', user);
+            localStorage.setItem('token', user.token);
+            this.router.navigate(['/dashboard']);
+            this._authUser$.next(user);
+          } else {
+            alert('Invalid email or password');
+          }
+        },
+      });
   }
 
   logout(): void {
     localStorage.removeItem('token');
+    this._authUser$.next(null);
   }
 
-  verifyToken(token: string): User | boolean {
+  verifyToken(): Observable<User | boolean> {
     const storedToken = localStorage.getItem('token');
-
-    if (!storedToken) {
-      return false;
-    }
-
-    return FAKE_AUTH_USER;
+    return this.http
+      .get<User[]>(`http://localhost:3000/users?token=${storedToken}`)
+      .pipe(
+        map((response) => {
+          const user = response[0];
+          if (user) {
+            localStorage.setItem('token', user.token);
+            this._authUser$.next(user);
+            return user;
+          } else {
+            return false;
+          }
+        })
+      );
   }
 }

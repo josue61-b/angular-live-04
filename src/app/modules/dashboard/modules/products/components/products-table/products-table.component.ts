@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../../models';
+import { AuthService } from '../../../../../../core/services/auth.service';
+import { Observable } from 'rxjs';
+import { User } from '../../../../../../core/models';
 
 export interface PeriodicElement {
   name: string;
@@ -27,4 +30,10 @@ export class ProductsTableComponent {
 
   @Output()
   editProduct = new EventEmitter<Product>();
+
+  authUser$: Observable<User | null>;
+
+  constructor(private authService: AuthService) {
+    this.authUser$ = this.authService.authUser$;
+  }
 }

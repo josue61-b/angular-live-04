@@ -7,7 +7,12 @@
 </ng-container>
 
 <ng-template #notLoading>
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="w-50">
+  <form
+    *ngIf="(authUser$ | async)?.role === 'admin'"
+    [formGroup]="productForm"
+    (ngSubmit)="onSubmit()"
+    class="w-50"
+  >
     <div class="row">
       <div class="col-6">
         <mat-form-field class="w-100">

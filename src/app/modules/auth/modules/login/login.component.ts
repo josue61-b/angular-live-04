@@ -31,12 +31,12 @@ export class LoginComponent {
       const { email, password } = this.loginForm.value;
       const user = this.authService.login(email, password);
 
-      if (user) {
-        // Navigate to the dashboard or any other route
-        this.router.navigate(['/dashboard']);
-      } else {
-        alert('Invalid email or password');
-      }
+      // if (user) {
+      //   // Navigate to the dashboard or any other route
+      //   this.router.navigate(['/dashboard']);
+      // } else {
+      //   alert('Invalid email or password');
+      // }
     }
   }
 }
