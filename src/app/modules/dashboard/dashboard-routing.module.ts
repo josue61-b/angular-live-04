@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { adminGuard } from '../../core/guards/admin.guard';
 
 // Ya partimos de la base /dashboard
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   },
   {
     path: 'orders',
+    canActivate: [adminGuard],
     loadChildren: () =>
       import('./modules/orders/orders.module').then((m) => m.OrdersModule),
   },

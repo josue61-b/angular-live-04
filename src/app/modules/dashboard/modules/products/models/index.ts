@@ -4,3 +4,9 @@ export interface Product {
   category: string; // Added category property
   price: number;
 }
+
+export interface ProductForm {
+  name: string;
+  category: string; // Added category property
+  price: number;
+}

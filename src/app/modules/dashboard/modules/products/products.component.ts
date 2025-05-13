@@ -92,19 +92,35 @@ export class ProductsComponent implements OnDestroy {
       );
     } else {
       const newProduct = this.productForm.value;
-      newProduct.id = this.products.length + 1; // Assign a new ID based on the current length of the products array
-      this.products = [...this.products, newProduct];
+      // newProduct.id = this.products.length + 1; // Assign a new ID based on the current length of the products array
+
       console.log(this.products);
+
+      this.productsService.createProduct(newProduct).subscribe({
+        next: (response) => {
+          console.log('Producto creado: ', response);
+          this.products = [...this.products, response];
+          // this.products.push(response); // Add the new product to the products array
+        },
+        error: (error) => console.error(error),
+        complete: () => {
+          console.log('Producto creado exitosamente');
+        },
+      });
     }
 
     this.productForm.reset(); // Reset the form after submission
     this.isEditingId = null;
   }
 
-  onDeleteProduct(id: number) {
+  onDeleteProduct(id: number | string) {
     console.log('SE VA A ELIMINAR EL PRODUCTO CON ID: ', id);
     if (confirm('¿Está seguro de que desea eliminar este producto?')) {
-      this.products = this.products.filter((product) => product.id !== id);
+      this.productsService.deleteProduct(id.toLocaleString()).subscribe({
+        next: (response) => {
+          this.products = response;
+        },
+      });
     }
   }
 

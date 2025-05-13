@@ -1,5 +1,18 @@
 {
-  "products": [],
+  "products": [
+    {
+      "id": "c5d8",
+      "name": "asdsadasdas",
+      "price": "2132432432",
+      "category": null
+    },
+    {
+      "id": "7fbd",
+      "name": "sdasdsad",
+      "price": "123232",
+      "category": null
+    }
+  ],
   "orders": [],
   "users": [
     {
