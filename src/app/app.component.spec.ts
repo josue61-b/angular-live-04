@@ -2,34 +2,79 @@ import { TestBed } from '@angular/core/testing';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 
+// Describe agrupa los test de un componente
 describe('AppComponent', () => {
   beforeEach(async () => {
+    // Configuramos el entorno de pruebas
     await TestBed.configureTestingModule({
-      imports: [
-        RouterModule.forRoot([])
-      ],
-      declarations: [
-        AppComponent
-      ],
+      imports: [RouterModule.forRoot([])],
+      declarations: [AppComponent],
     }).compileComponents();
   });
 
-  it('should create the app', () => {
+  // IT es un test individual
+  it('debe crearse el app', () => {
+    // Creamos el componente
     const fixture = TestBed.createComponent(AppComponent);
+
+    // Extraemos la instancia del componente
     const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+
+    // Espero que...
+    expect(app)
+      // Matchers son funciones que permiten hacer comparaciones
+      // Truthy seria como algo no nulo ni indefinido
+      .toBeTruthy();
   });
 
-  it(`should have as title 'clase-live-04-angular'`, () => {
+  it('El HP inicial debe ser 100', () => {
+    // Creamos el componente
     const fixture = TestBed.createComponent(AppComponent);
+
+    // Extraemos la instancia del componente
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('clase-live-04-angular');
+
+    app.iniciarJuego();
+
+    expect(app.HP).toBe(100);
   });
 
-  it('should render title', () => {
+  it('Al iniciarJuego() se debe mostrar un mensaje en consola', () => {
+    // Creamos el componente
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, clase-live-04-angular');
+
+    // Extraemos la instancia del componente
+    const app = fixture.componentInstance;
+    const spyOnConsoleLog = spyOn(console, 'log');
+
+    app.iniciarJuego();
+    expect(spyOnConsoleLog)
+      // Debe haberse llamado
+      .toHaveBeenCalledWith(`Iniciando juego... Jugador ${app.nombreJugador}`);
+  });
+
+  it('Los items iniciales deben ser Escudo, Espada y Pocion', () => {
+    // Creamos el componente
+    const fixture = TestBed.createComponent(AppComponent);
+
+    // Extraemos la instancia del componente
+    const app = fixture.componentInstance;
+
+    expect(app.items).toEqual(['Escudo', 'Espada', 'Pocion']);
+  });
+
+  it('La energia debe disminuir en 10 al atacar', () => {
+    // Creamos el componente
+    const fixture = TestBed.createComponent(AppComponent);
+
+    // Extraemos la instancia del componente
+    const app = fixture.componentInstance;
+
+    app.iniciarJuego();
+    app.atacar();
+
+    expect(app.energia)
+      // Debe ser 90
+      .toBe(90);
   });
 });
