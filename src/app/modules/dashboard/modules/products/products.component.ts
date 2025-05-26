@@ -2,7 +2,15 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Product } from './models';
 import { ProductsService } from './products.service';
-import { first, Observable, Subscription, take } from 'rxjs';
+import {
+  concatMap,
+  first,
+  map,
+  Observable,
+  of,
+  Subscription,
+  take,
+} from 'rxjs';
 import { AuthService } from '../../../../core/services/auth.service';
 import { User } from '../../../../core/models';
 
@@ -48,6 +56,22 @@ export class ProductsComponent implements OnDestroy {
       price: [''],
       category: [''], // Add category to the form group
     });
+    this.loadAsync();
+  }
+
+  loadAsync(): void {
+    of('543')
+      .pipe(
+        concatMap((id) => this.getAlgoById(id)), // Use,
+        concatMap(() => of(23))
+      )
+      .subscribe({
+        next: (algo) => console.log('Algo obtenido: ', algo),
+      });
+  }
+
+  getAlgoById(id: string): Observable<any> {
+    return of(id).pipe(map(() => ({ id, name: 'Producto ' + id })));
   }
 
   ngOnDestroy(): void {

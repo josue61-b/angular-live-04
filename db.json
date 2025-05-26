@@ -2,7 +2,7 @@
   "products": [
     {
       "id": "c5d8",
-      "name": "asdsadasdas",
+      "name": "PC Gamer",
       "price": "2132432432",
       "category": null
     },
@@ -13,7 +13,14 @@
       "category": null
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": "4fve",
+      "userId": 1,
+      "productId": "c5d8",
+      "quantity": 2
+    }
+  ],
   "users": [
     {
       "id": 1,

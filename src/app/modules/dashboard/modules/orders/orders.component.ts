@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import {
   decrement,
@@ -6,6 +6,7 @@ import {
 } from '../../../../store/counter/counter.actions';
 import { map, Observable } from 'rxjs';
 import { selectCounterState } from '../../../../store/counter/counter.selector';
+import { OrdersActions } from './store/orders.actions';
 
 @Component({
   selector: 'app-orders',
@@ -13,13 +14,17 @@ import { selectCounterState } from '../../../../store/counter/counter.selector';
   templateUrl: './orders.component.html',
   styles: ``,
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnInit {
   count$: Observable<number>;
 
   constructor(private store: Store) {
     this.count$ = this.store
       .select(selectCounterState)
       .pipe(map((state) => state.count));
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch(OrdersActions.loadOrders());
   }
 
   increment() {
