@@ -2,3 +2,33 @@
 
 <button (click)="increment()">Incrementar</button>
 <button (click)="decrement()">Decrementar</button> -->
+
+<h2>Ordenes</h2>
+
+@if (loading$ | async) {
+<p>Cargando...</p>
+} @else if (error$ | async) {
+<p>Error al cargar las ordenes.</p>
+} @else {
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>User</th>
+      <th>Product</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders$ | async">
+      <td>{{ order.id }}</td>
+      <td>{{ order.user?.name }}</td>
+      <td>{{ order.product?.name + " - $" + order.product?.price }}</td>
+      <td>
+        <button>Editar</button>
+        <button>Eliminar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+}

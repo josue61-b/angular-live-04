@@ -7,6 +7,12 @@ import {
 import { map, Observable } from 'rxjs';
 import { selectCounterState } from '../../../../store/counter/counter.selector';
 import { OrdersActions } from './store/orders.actions';
+import { Order } from './models';
+import {
+  selectOrders,
+  selectOrdersError,
+  selectOrdersLoading,
+} from './store/orders.selectors';
 
 @Component({
   selector: 'app-orders',
@@ -17,7 +23,15 @@ import { OrdersActions } from './store/orders.actions';
 export class OrdersComponent implements OnInit {
   count$: Observable<number>;
 
+  orders$: Observable<Order[]>;
+  loading$: Observable<boolean>;
+  error$: Observable<string | null>;
+
   constructor(private store: Store) {
+    this.orders$ = this.store.select(selectOrders);
+    this.loading$ = this.store.select(selectOrdersLoading);
+    this.error$ = this.store.select(selectOrdersError);
+
     this.count$ = this.store
       .select(selectCounterState)
       .pipe(map((state) => state.count));

@@ -3,27 +3,33 @@
     {
       "id": "c5d8",
       "name": "PC Gamer",
-      "price": "2132432432",
+      "price": "500.00",
       "category": null
     },
     {
       "id": "7fbd",
-      "name": "sdasdsad",
-      "price": "123232",
+      "name": "PS5",
+      "price": "900.50",
       "category": null
     }
   ],
   "orders": [
     {
-      "id": "4fve",
-      "userId": 1,
+      "id": "8jaa",
+      "userId": "f4fnd",
       "productId": "c5d8",
+      "quantity": 2
+    },
+    {
+      "id": "4fve",
+      "userId": "sdvcf4",
+      "productId": "7fbd",
       "quantity": 2
     }
   ],
   "users": [
     {
-      "id": 1,
+      "id": "f4fnd",
       "name": "John Doe",
       "email": "fake@mail.com",
       "password": "123456",
@@ -31,7 +37,7 @@
       "token": "DJKFKJNDSJcvnvfuFDNJSAFYnsdsmcnjdasfdjj232"
     },
     {
-      "id": 2,
+      "id": "sdvcf4",
       "name": "Jane Doe",
       "email": "jane@mail.com",
       "password": "123456",

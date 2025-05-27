@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
 import { Order } from './models';
 
 @Injectable({ providedIn: 'root' })
@@ -15,6 +15,9 @@ export class OrdersService {
   getOrders(): Observable<Order[]> {
     // Lógica para obtener pedidos
     // Por ejemplo, hacer una solicitud HTTP a la API de pedidos
-    return this.httpClient.get<Order[]>('http://localhost:3000/or2ders');
+    return this.httpClient.get<Order[]>(
+      'http://localhost:3000/orders?_embed=product&_embed=user'
+    );
+    // .pipe(delay(1000));
   }
 }
